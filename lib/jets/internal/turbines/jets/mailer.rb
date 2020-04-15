@@ -34,19 +34,15 @@ module Jets
         # extend ::AbstractController::Railties::RoutesHelpers.with(app.routes, false)
         # include app.routes.mounted_helpers
 
-        puts "self #{self}"
-        # puts "action_mailer object_id2 #{options.object_id}"
-        options = Jets.config.action_mailer # since scope in here is different
-        # puts "action_mailer object_id3 #{options.object_id}"
-
         register_interceptors(options.delete(:interceptors))
         register_preview_interceptors(options.delete(:preview_interceptors))
         register_observers(options.delete(:observers))
 
         options.each { |k, v| send("#{k}=", v) }
 
-        puts "Jets.config.object_id #{Jets.config.object_id}"
-        puts "Jets.config.action_mailer #{Jets.config.action_mailer}"
+        puts "mailer.rb Jets.config.object_id #{Jets.config.object_id}"
+        puts "mailer.rb Jets.config.action_mailer.object_id #{Jets.config.action_mailer.object_id} (config.action_mailer)"
+        puts "mailer.rb options #{options.object_id} (config.action_mailer)"
 
         # puts "on_load config.object_id #{config.object_id}".color(:yellow)
       end
