@@ -16,7 +16,7 @@ class Jets::Application
     setup_autoload_paths
     setup_ignore_paths
     main_loader_setup
-    puts "setup @config.object_id #{@config.object_id}"
+    puts "application.rb setup! @config.object_id #{@config.object_id}"
   end
 
   def configs!
@@ -24,7 +24,7 @@ class Jets::Application
     load_db_config
     set_iam_policy # relies on dependent values, must be called afterwards
     normalize_env_vars!
-    puts "configs! @config.object_id #{@config.object_id}"
+    puts "application.rb configs! @config.object_id #{@config.object_id}"
   end
 
   # After the mimimal template gets build, we need to reload it for the full stack
@@ -71,7 +71,9 @@ class Jets::Application
   end
 
   def load_default_config
+    # puts "application.rb load_default_config1 @config.object_id #{@config.object_id}"
     @config = default_config # sets Jets.config.project_name by calling parse_project_name
+    puts "application.rb load_default_config2 @config.object_id #{@config.object_id}" #  (should be different)
     set_computed_configs! # things like project_namespace that need project_name
     Jets::Dotenv.load! # needs Jets.config.project_name when using ssm in dotenv files
     Jets.config.project_name = parse_project_name # Must set again because JETS_PROJECT_NAME is possible

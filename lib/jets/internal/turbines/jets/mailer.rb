@@ -1,17 +1,20 @@
 module Jets
   # Reference: https://github.com/rails/rails/blob/master/actionmailer/lib/action_mailer/railtie.rb
   class Mailer < ::Jets::Turbine
-    puts "Jets::Mailer Turbine loaded"
+    puts "mailer.rb turbine loaded"
 
     config.action_mailer = ActiveSupport::OrderedOptions.new
+    # puts "action_mailer object_id1 #{config.action_mailer.object_id}"
 
     initializer "action_mailer.logger" do
       ActiveSupport.on_load(:action_mailer) { self.logger ||= Jets.logger }
     end
 
     initializer "action_mailer.set_configs" do |app|
-      app.config.action_mailer ||= ActiveSupport::OrderedOptions.new # TODO: temp fix. only happens sometimes?
-      puts "initializer config.object_id #{config.object_id}"
+      # app.config.action_mailer ||= ActiveSupport::OrderedOptions.new # TODO: temp fix. only happens sometimes?
+      puts "mailer.rb initializer config.object_id #{config.object_id}"
+      # pp config is
+      # :action_mailer=>{},
 
       options = app.config.action_mailer
       options.default_url_options ||= {}
@@ -31,13 +34,21 @@ module Jets
         # extend ::AbstractController::Railties::RoutesHelpers.with(app.routes, false)
         # include app.routes.mounted_helpers
 
+        puts "self #{self}"
+        # puts "action_mailer object_id2 #{options.object_id}"
+        options = Jets.config.action_mailer # since scope in here is different
+        # puts "action_mailer object_id3 #{options.object_id}"
+
         register_interceptors(options.delete(:interceptors))
         register_preview_interceptors(options.delete(:preview_interceptors))
         register_observers(options.delete(:observers))
 
         options.each { |k, v| send("#{k}=", v) }
 
-        puts "on_load config.object_id #{config.object_id}"
+        puts "Jets.config.object_id #{Jets.config.object_id}"
+        puts "Jets.config.action_mailer #{Jets.config.action_mailer}"
+
+        # puts "on_load config.object_id #{config.object_id}".color(:yellow)
       end
     end
 
