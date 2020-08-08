@@ -19,7 +19,7 @@ module Jets::Builders
       copy_cache_gems
     end
 
-    #   build gems in vendor/gems/ruby/2.5.0 (done in install phase)
+    #   build gems in vendor/gems/ruby/2.7.0 (done in install phase)
     def finish
       return unless gemfile_exist?
       tidy
@@ -94,9 +94,9 @@ module Jets::Builders
       Tidy.new(path).cleanup!
     end
 
-    # This is in case the user has a 2.5.x variant.
+    # This is in case the user has a 2.7.x variant.
     # Force usage of ruby version that jets supports
-    # The lambda server only has ruby 2.5.0 installed.
+    # The lambda server only has ruby 2.7.0 installed.
     def reconfigure_ruby_version
       ruby_version = "#{@full_app_root}/.ruby-version"
       IO.write(ruby_version, Jets::RUBY_VERSION)
@@ -127,8 +127,8 @@ module Jets::Builders
         md[1] # git_sha
       end
 
-      # IE: /tmp/jets/demo/cache/vendor/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
-      Dir.glob("#{cache_area}/vendor/gems/ruby/2.5.0/bundler/gems/*").each do |path|
+      # IE: /tmp/jets/demo/cache/vendor/gems/ruby/2.7.0/bundler/gems/webpacker-a8c46614c675
+      Dir.glob("#{cache_area}/vendor/gems/ruby/2.7.0/bundler/gems/*").each do |path|
         sha = path.split('-').last[0..6] # only first 7 chars of the git sha
         unless git_shas.include?(sha)
           # puts "Removing old submoduled gem: #{path}" # uncomment to see and debug
